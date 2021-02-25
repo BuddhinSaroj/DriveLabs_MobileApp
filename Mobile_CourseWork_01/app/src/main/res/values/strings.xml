@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">   ~~~ DriveLabs ~~~   </string>
+    <string name="btn01">Identify the car make</string>
+    <string name="btn02">Hints</string>
+    <string name="btn03">Identify the car image</string>
+    <string name="btn04">Advanced Level</string>
+    <string name="bg_img">Bg Image</string>
+    <string name="btn_identify">Identify</string>
+    <string name="car_img">Car Image</string>
+    <string name="txt_carName"></string>
+    <string name="img2">img2</string>
+    <string name="img1">img1</string>
+    <string name="img3">img3</string>
+    <string name="next">Next>></string>
+    <string name="todo2">TODO</string>
+    <string name="todo">TODO</string>
+    <string name="txt_hint"></string>
+    <string name="input_char">Input character here :</string>
+    <string name="btn_submit">Submit</string>
+    <string name="txt_img">Car Make img 01</string>
+    <string name="txt_img2">Car Make img 02</string>
+    <string name="txt_img3">Car Make img 03</string>
+    <string name="textCor01"></string>
+    <string name="textCor02"></string>
+    <string name="textCor03"></string>
+    <string name="counterView">0</string>
+    <string name="answer" />
+    <string name="exceed" />
+    <string-array name="cars_arrayList">
+        <item>Select Car Model : </item>
+        <item>Audi</item>
+        <item>BMW</item>
+        <item>Honda</item>
+        <item>Mercedes</item>
+        <item>Nissan</item>
+        <item>Peugeot</item>
+        <item>Suzuki</item>
+        <item>Tesla</item>
+        <item>Toyota</item>
+    </string-array>
+</resources>
