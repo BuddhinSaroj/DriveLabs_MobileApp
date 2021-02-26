@@ -31,17 +31,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hintOnClick(View view) {
+        if (timer.isChecked()){
+            value = true;
+        }else {
+            value = false;
+        }
         intent = new Intent(MainActivity.this,HintsGuessing.class);
+        intent.putExtra("isChecked",value);
         startActivity(intent);
     }
 
     public void identifyCarImgOnClick(View view) {
+        if (timer.isChecked()){
+            value = true;
+        }else {
+            value = false;
+        }
         intent = new Intent(MainActivity.this,IdentifyCarImg.class);
+        intent.putExtra("isChecked",value);
         startActivity(intent);
     }
 
     public void advancedLevelOnclick(View view) {
+        if (timer.isChecked()){
+            value = true;
+        }else {
+            value = false;
+        }
         intent = new Intent(MainActivity.this,AdvancedLevel.class);
+        intent.putExtra("isChecked",value);
         startActivity(intent);
     }
 }

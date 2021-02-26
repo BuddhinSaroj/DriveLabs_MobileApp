@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
-import java.util.Timer;
 
 import es.dmoral.toasty.Toasty;
 
@@ -38,14 +37,14 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
         Intent intent = getIntent();
         switchedOn = intent.getBooleanExtra("isChecked",false);
         randomCarImage();
-        mainFunction();
+        timeFunction();
     }
 
-    public void mainFunction(){
+    public void timeFunction(){
 
 
         if(switchedOn){
-             countdownTimer = new CountDownTimer(10000, 1000) {
+             countdownTimer = new CountDownTimer(20000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     timerView.setText(""+millisUntilFinished / 1000);
@@ -95,8 +94,6 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
             countdownTimer = null;
         }
         function();
-
-
     }
 
     public void function(){
@@ -190,7 +187,9 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
             btn_identify_next.setText("Next");
         }
         else if(btn_identify_next.getText().equals("Next")){
-            mainFunction();
+            if (switchedOn){
+                timeFunction();
+            }
             btn_identify_next.setText("Identify");
             txt_correction.setText("");
             randomCarImage();
