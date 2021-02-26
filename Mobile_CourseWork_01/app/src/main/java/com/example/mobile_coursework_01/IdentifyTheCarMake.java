@@ -37,12 +37,13 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
         timerView = findViewById(R.id.timerView);
         Intent intent = getIntent();
         switchedOn = intent.getBooleanExtra("isChecked",false);
+        randomCarImage();
         mainFunction();
     }
 
     public void mainFunction(){
 
-        randomCarImage();
+
         if(switchedOn){
              countdownTimer = new CountDownTimer(10000, 1000) {
                 @Override
@@ -89,9 +90,13 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
         }
     }
     public void identifyButtonOnClick(View view) {
+        if(countdownTimer != null) {
+            countdownTimer.cancel();
+            countdownTimer = null;
+        }
         function();
-        //countdownTimer.cancel();
-        mainFunction();
+
+
     }
 
     public void function(){
@@ -185,6 +190,7 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
             btn_identify_next.setText("Next");
         }
         else if(btn_identify_next.getText().equals("Next")){
+            mainFunction();
             btn_identify_next.setText("Identify");
             txt_correction.setText("");
             randomCarImage();
