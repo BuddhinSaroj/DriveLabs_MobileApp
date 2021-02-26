@@ -10,14 +10,13 @@
         android:id="@+id/bg_imgView"
         android:layout_width="591dp"
         android:layout_height="1457dp"
+        android:contentDescription="@string/bg_img"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499"
-        app:srcCompat="@drawable/car"
-        android:contentDescription="@string/bg_img" />
+        app:srcCompat="@drawable/car" />
 
     <Button
         android:id="@+id/btn_IdentifyCarMake"
@@ -69,5 +68,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.713" />
+
+    <Switch
+        android:id="@+id/switch_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/timer"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="normal|bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.829"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.122" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

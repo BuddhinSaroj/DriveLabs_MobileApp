@@ -26,6 +26,8 @@
     <string name="counterView">0</string>
     <string name="answer" />
     <string name="exceed" />
+    <string name="timer">Timer</string>
+    <string name="timerView" />
     <string-array name="cars_arrayList">
         <item>Select Car Model : </item>
         <item>Audi</item>

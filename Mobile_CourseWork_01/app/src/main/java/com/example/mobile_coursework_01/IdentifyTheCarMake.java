@@ -2,7 +2,9 @@ package com.example.mobile_coursework_01;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
+import java.util.Timer;
 
 import es.dmoral.toasty.Toasty;
 
@@ -20,15 +23,40 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
 
     Spinner spinner;
     TextView txt_correction;
+    TextView timerView;
     Button btn_identify_next;
     int random_car;
     String carMake;
+    boolean switchedOn;
+    CountDownTimer countdownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identify_the_car_make);
+        timerView = findViewById(R.id.timerView);
+        Intent intent = getIntent();
+        switchedOn = intent.getBooleanExtra("isChecked",false);
+        mainFunction();
+    }
+
+    public void mainFunction(){
+
         randomCarImage();
+        if(switchedOn){
+             countdownTimer = new CountDownTimer(10000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    timerView.setText(""+millisUntilFinished / 1000);
+                }
+
+                @Override
+                public void onFinish() {
+                    function();
+                }
+            }.start();
+
+        }
 
         spinner = findViewById(R.id.spinner);
         if (spinner != null) {
@@ -43,7 +71,7 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
 
     private void randomCarImage() {
         Random random = new Random();
-        random_car = random.nextInt(31);
+        random_car = 1+random.nextInt(30);
         ImageView imageView = (ImageView) findViewById(R.id.random_imageView);
         String carId = "img_" + random_car;
         imageView.setImageDrawable(getResources().getDrawable(getID(carId,"drawable",getApplicationContext())));
@@ -61,6 +89,13 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
         }
     }
     public void identifyButtonOnClick(View view) {
+        function();
+        //countdownTimer.cancel();
+        mainFunction();
+    }
+
+    public void function(){
+        timerView.setText("");
         txt_correction = findViewById(R.id.txt_carName);
         btn_identify_next = findViewById(R.id.btn_identify);
 
