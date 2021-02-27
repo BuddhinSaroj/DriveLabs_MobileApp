@@ -2,8 +2,10 @@ package com.example.mobile_coursework_01;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,18 +28,46 @@ public class HintsGuessing extends AppCompatActivity {
     TextView exceeded;
     int greenColorValue = Color.parseColor("#23cc1b");
     int yellowColorValue = Color.parseColor("#e3ff00");
+    boolean switchedOn;
+    CountDownTimer countdownTimer;
+    TextView timerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hints_guessing);
+        Intent intent = getIntent();
+        switchedOn = intent.getBooleanExtra("isChecked",false);
         txt_characters = findViewById(R.id.txt_hint);
         inputTxt = findViewById(R.id.input_char);
         submitBtn = findViewById(R.id.btn_submit);
         answers = findViewById(R.id.answer);
         exceeded = findViewById(R.id.exceed);
+        timerView = findViewById(R.id.timerView3);
         randomCarImage();
         charSpacings();
+        timeFunction();
+    }
+
+    public void timeFunction(){
+
+        if(switchedOn){
+            countdownTimer = new CountDownTimer(20000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    timerView.setText(""+millisUntilFinished / 1000);
+                }
+
+                @Override
+                public void onFinish() {
+                    Toasty.warning(getApplicationContext(), "Time exceeded click on next button", Toast.LENGTH_LONG).show();
+                    answers.setTextColor(greenColorValue);
+                    answers.setText("Correct answer is : " + carModel);
+                    submitBtn.setText("Next");
+                }
+            }.start();
+
+        }
     }
     private void randomCarImage() {
         Random random = new Random();
@@ -97,9 +127,11 @@ public class HintsGuessing extends AppCompatActivity {
         }
     }
     int attempts = 3;
+
     public void submit(View view) {
         function();
     }
+
     public void function(){
 
         String inputLetter = inputTxt.getText().toString().toUpperCase();
@@ -121,10 +153,18 @@ public class HintsGuessing extends AppCompatActivity {
                 }
             }if (carModel.equalsIgnoreCase(dash)){
                 Toasty.success(this, "CORRECT!", Toast.LENGTH_SHORT).show();
+                if(countdownTimer != null) {//if user guess the correct answer,and that code used to stop current running time.
+                    countdownTimer.cancel();
+                    countdownTimer = null;
+                }
                 submitBtn.setText("Next");
             }
         }
-        else if (attempts <= 0 && submitBtn.getText().toString().equalsIgnoreCase("Submit")){
+        else if (attempts <= 0 && submitBtn.getText().toString().equalsIgnoreCase("Submit")){//if user guess the incorrect letter or left maximum attempts
+            if(countdownTimer != null) {//that code used to stop current running time.
+                countdownTimer.cancel();
+                countdownTimer = null;
+            }
             exceeded.setTextColor(yellowColorValue);
             exceeded.setText("Oooops ! Your attempts are left");
             answers.setTextColor(greenColorValue);
@@ -146,5 +186,8 @@ public class HintsGuessing extends AppCompatActivity {
     public void next(){
         randomCarImage();
         charSpacings();
+        if (switchedOn){
+            timeFunction();
+        }
     }
 }

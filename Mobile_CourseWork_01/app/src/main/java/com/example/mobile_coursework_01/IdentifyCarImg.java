@@ -219,6 +219,8 @@ public class IdentifyCarImg extends AppCompatActivity {
     public void next(){
         clicks = 0; //after click on the next button click variable set to zero
         carImgGenerate();
-        timeFunction();
+        if (switchedOn){
+            timeFunction();
+        }
     }
 }

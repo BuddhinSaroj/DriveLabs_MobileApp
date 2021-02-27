@@ -2,8 +2,10 @@ package com.example.mobile_coursework_01;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,17 +47,44 @@ public class AdvancedLevel extends AppCompatActivity {
     String carModelOne="";
     String carModelTwo="";
     String carModelThree="";
+    TextView timerView;
+    boolean switchedOn;
+    CountDownTimer countdownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advanced_level);
         submitBtn = findViewById(R.id.submitBtn);
+        Intent intent = getIntent();
+        switchedOn = intent.getBooleanExtra("isChecked",false);
+        timerView = findViewById(R.id.timerView4);
         txtCorrectionOne = (TextView)findViewById(R.id.txt_correction1);
         txtCorrectionTwo = (TextView)findViewById(R.id.txt_correction2);
         txtCorrectionThree =(TextView) findViewById(R.id.txt_correction3);
         counterView = (TextView)findViewById(R.id.counter);
         carImgGenerate();
+        timeFunction();
+    }
+
+    public void timeFunction(){
+
+        if(switchedOn){
+            countdownTimer = new CountDownTimer(20000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    timerView.setText(""+millisUntilFinished / 1000);
+                }
+
+                @Override
+                public void onFinish() {
+                    attempts = 4;
+                    checkingTxt();
+                    submitBtn.setText("Next");
+                }
+            }.start();
+
+        }
     }
 
     private void carImgGenerate()
@@ -88,7 +117,6 @@ public class AdvancedLevel extends AppCompatActivity {
 
     private void checkingTxt() {
         if (submitBtn.getText().equals("Submit")) {
-            String model = inputTxtOne.getText().toString();
             if ((carOne >= 0 && carOne <= 4) && !(inputTxtOne.getText().toString().equalsIgnoreCase("Correct ! "))) {
                 if (inputTxtOne.getText().toString().equalsIgnoreCase("Audi")) {
                     inputTxtOne.setText("Correct ! ");
@@ -206,7 +234,9 @@ public class AdvancedLevel extends AppCompatActivity {
                     carModelThree = "Suzuki";
                 }
             }
+//
             counterView.setText(String.valueOf(count));//set marks
+
             if (attempts > 3){
                 if (inputTxtOne.getHint().toString().equals("Wrong!") ){
                     txtCorrectionOne.setText(carModelOne);
@@ -228,6 +258,10 @@ public class AdvancedLevel extends AppCompatActivity {
                 Toasty.error(this, "No attempts left ! ", Toast.LENGTH_LONG).show();
             }if((inputTxtOne.getText().toString().equals("Correct ! ") && inputTxtTwo.getText().toString().equals("Correct ! ") &&inputTxtThree.getText().toString().equals("Correct ! "))){
                 attempts = 0;
+                if(countdownTimer != null) {
+                    countdownTimer.cancel();
+                    countdownTimer = null;
+                }
                 submitBtn.setText("Next");
                 Toasty.success(this, "CORRECT!", Toast.LENGTH_LONG).show();
             }
@@ -235,6 +269,9 @@ public class AdvancedLevel extends AppCompatActivity {
         else if(submitBtn.getText().equals("Next")){
             submitBtn.setText("Submit");
             carImgGenerate();
+            if (switchedOn){
+                timeFunction();
+            }
             inputTxtOne.setText("");
             inputTxtOne.setTextColor(defTextColorValue);
             inputTxtOne.setEnabled(true);
