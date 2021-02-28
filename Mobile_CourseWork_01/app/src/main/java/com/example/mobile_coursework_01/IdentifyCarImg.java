@@ -22,6 +22,9 @@ public class IdentifyCarImg extends AppCompatActivity {
     ImageView randomImg03;
     TextView timerView;
     TextView displayingCarName;
+    int carOne ;
+    int carTwo ;
+    int carThree ;
     int clicks = 0 ;
     boolean switchedOn;
     CountDownTimer countdownTimer;
@@ -38,9 +41,25 @@ public class IdentifyCarImg extends AppCompatActivity {
         Intent intent = getIntent();
         switchedOn = intent.getBooleanExtra("isChecked",false);
         displayingCarName = findViewById(R.id.txt_carName);
+        randomImg01 = findViewById(R.id.random_Img_01);
+        randomImg02 = findViewById(R.id.random_Img_02);
+        randomImg03 = findViewById(R.id.random_Img_03);
         timerView = findViewById(R.id.timerView2);
         carImgGenerate();
         timeFunction();
+        if (savedInstanceState != null) {
+            clicks = savedInstanceState.getInt("clicks");
+            carOne = savedInstanceState.getInt("carOne");
+            randomImg01.setImageResource(firstSetOfCar[carOne]);
+
+            carTwo = savedInstanceState.getInt("carTwo");
+            randomImg02.setImageResource(secondSetOfCar[carTwo]);//secondSetOfCar[arrayIndex];
+
+            carThree = savedInstanceState.getInt("carThree");
+            randomImg03.setImageResource(thirdSetOfCar[carThree]);//thirdSetOfCar[arrayIndex];
+
+            displayingCarName.setText(savedInstanceState.getString("car_name"));
+        }
     }
     public void timeFunction(){
 
@@ -64,21 +83,16 @@ public class IdentifyCarImg extends AppCompatActivity {
 
     private void carImgGenerate()
     {
-        int carOne = random.nextInt(12);
-        int carTwo = random.nextInt(10);  //generate three random numbers for images.
-        int carThree = random.nextInt(8);
+        carOne = random.nextInt(12);
+        carTwo = random.nextInt(10);  //generate three random numbers for images.
+        carThree = random.nextInt(8);
 
         System.out.println(carOne+" "+carTwo+" "+carThree);
 
         int randomArr = random.nextInt(3);
 
-        randomImg01 = findViewById(R.id.random_Img_01);
         randomImg01.setImageResource(firstSetOfCar[carOne]); //firstSetOfCar[arrayIndex];
-
-        randomImg02 = findViewById(R.id.random_Img_02);
         randomImg02.setImageResource(secondSetOfCar[carTwo]);//secondSetOfCar[arrayIndex];
-
-        randomImg03 = findViewById(R.id.random_Img_03);
         randomImg03.setImageResource(thirdSetOfCar[carThree]);//thirdSetOfCar[arrayIndex];
 
         if(randomArr == 0)
@@ -222,5 +236,14 @@ public class IdentifyCarImg extends AppCompatActivity {
         if (switchedOn){
             timeFunction();
         }
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("clicks",clicks);
+        outState.putInt("carOne",carOne);
+        outState.putInt("carTwo",carTwo);
+        outState.putInt("carThree",carThree);
+        outState.putString("car_name",displayingCarName.getText().toString());
     }
 }

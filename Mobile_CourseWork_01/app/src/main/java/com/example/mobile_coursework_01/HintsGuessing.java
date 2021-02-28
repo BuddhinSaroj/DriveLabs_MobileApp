@@ -26,6 +26,7 @@ public class HintsGuessing extends AppCompatActivity {
     Button submitBtn;
     TextView answers;
     TextView exceeded;
+    ImageView imageView;
     int greenColorValue = Color.parseColor("#23cc1b");
     int yellowColorValue = Color.parseColor("#e3ff00");
     boolean switchedOn;
@@ -38,6 +39,7 @@ public class HintsGuessing extends AppCompatActivity {
         setContentView(R.layout.activity_hints_guessing);
         Intent intent = getIntent();
         switchedOn = intent.getBooleanExtra("isChecked",false);
+        imageView = (ImageView) findViewById(R.id.random_imageView2);
         txt_characters = findViewById(R.id.txt_hint);
         inputTxt = findViewById(R.id.input_char);
         submitBtn = findViewById(R.id.btn_submit);
@@ -47,6 +49,17 @@ public class HintsGuessing extends AppCompatActivity {
         randomCarImage();
         charSpacings();
         timeFunction();
+        if (savedInstanceState != null) {
+            random_car = savedInstanceState.getInt("random_car");
+            String carImage = "img_" + random_car;
+            imageView.setImageDrawable(getResources().getDrawable(getID(carImage)));
+            carId = savedInstanceState.getString("carId");
+            carModel = savedInstanceState.getString("carModel");
+            txt_characters.setText(savedInstanceState.getString("txt_characters"));
+            exceeded.setText(savedInstanceState.getString("exceeded"));
+            answers.setText(savedInstanceState.getString("answers"));
+            submitBtn.setText(savedInstanceState.getString("submitBtn"));
+        }
     }
 
     public void timeFunction(){
@@ -72,13 +85,13 @@ public class HintsGuessing extends AppCompatActivity {
     private void randomCarImage() {
         Random random = new Random();
         random_car =1+ random.nextInt(30);
-        ImageView imageView = (ImageView) findViewById(R.id.random_imageView2);
+
         carId= "img_" + random_car;
-        imageView.setImageDrawable(getResources().getDrawable(getID(carId,"drawable",getApplicationContext())));
+        imageView.setImageDrawable(getResources().getDrawable(getID(carId)));
     }
 
-    private int getID(String carId, String drawable, Context applicationContext) {
-        int ResourceID = applicationContext.getResources().getIdentifier(carId, drawable, applicationContext.getApplicationInfo().packageName);
+    private int getID(String carId) {//from stackOverFlow
+        int ResourceID = getResources().getIdentifier(carId,"drawable",getPackageName());
         if (ResourceID == 0) {
             throw new IllegalArgumentException(
                     "No resource string found with name : " + carId
@@ -189,5 +202,16 @@ public class HintsGuessing extends AppCompatActivity {
         if (switchedOn){
             timeFunction();
         }
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("random_car",random_car);
+        outState.putString("carId",carId);
+        outState.putString("carModel",carModel);
+        outState.putString("txt_characters",txt_characters.getText().toString());
+        outState.putString("exceeded",exceeded.getText().toString());
+        outState.putString("answers",answers.getText().toString());
+        outState.putString("submitBtn",submitBtn.getText().toString());
     }
 }

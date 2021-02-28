@@ -37,6 +37,8 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identify_the_car_make);
+        txt_correction = findViewById(R.id.txt_carName);
+        btn_identify_next = findViewById(R.id.btn_identify);
         timerView = findViewById(R.id.timerView);
         Intent intent = getIntent();
         switchedOn = intent.getBooleanExtra("isChecked",false);
@@ -48,17 +50,13 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
             random_car = savedInstanceState.getInt("random_car");
             String carImage = "img_" + random_car;
             imageView.setImageDrawable(getResources().getDrawable(getID(carImage)));
-            //txt_correction.setText(savedInstanceState.getString("correction_text"));
+            btn_identify_next.setText(savedInstanceState.getString("next_button"));
+            txt_correction.setText(savedInstanceState.getString("text_correction"));
+
         }
     }
 
-//    private int getID(String carId) {
-//        return Integer.parseInt(null);
-//    }
-
     public void timeFunction(){
-
-
         if(switchedOn){
              countdownTimer = new CountDownTimer(20000, 1000) {
                 @Override
@@ -93,8 +91,7 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
         imageView.setImageDrawable(getResources().getDrawable(getID(carId)));
     }
 
-    private int getID(String carId) {
-        //int ResourceID = applicationContext.getResources().getIdentifier(carId, drawable, applicationContext.getApplicationInfo().packageName);
+    private int getID(String carId) {//from stackOverFlow
         int ResourceID = getResources().getIdentifier(carId,"drawable",getPackageName());
         if (ResourceID == 0) {
             throw new IllegalArgumentException(
@@ -115,9 +112,6 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
 
     public void function(){
         timerView.setText("");
-        txt_correction = findViewById(R.id.txt_carName);
-        btn_identify_next = findViewById(R.id.btn_identify);
-
         if(btn_identify_next.getText().equals("Identify")){
             carMake = spinner.getSelectedItem().toString();
             if(random_car >= 1 && random_car <= 5){
@@ -230,6 +224,7 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("random_car",random_car);
-        //outState.putString("correction_text", txt_correction.getText().toString());
+        outState.putString("next_button",btn_identify_next.getText().toString());
+        outState.putString("text_correction",txt_correction.getText().toString());
     }
 }
