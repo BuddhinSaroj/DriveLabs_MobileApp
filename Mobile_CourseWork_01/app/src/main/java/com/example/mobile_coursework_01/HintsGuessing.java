@@ -61,7 +61,7 @@ public class HintsGuessing extends AppCompatActivity {
                 @Override
                 public void onFinish() {
                     Toasty.warning(getApplicationContext(), "Time exceeded click on next button", Toast.LENGTH_LONG).show();
-                    answers.setTextColor(greenColorValue);
+                    answers.setTextColor(Color.parseColor("#23cc1b"));
                     answers.setText("Correct answer is : " + carModel);
                     submitBtn.setText("Next");
                 }

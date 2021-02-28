@@ -1,10 +1,12 @@
 package com.example.mobile_coursework_01;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,7 +26,9 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
     TextView txt_correction;
     TextView timerView;
     Button btn_identify_next;
+    ImageView imageView;
     int random_car;
+    String carId;
     String carMake;
     boolean switchedOn;
     CountDownTimer countdownTimer;
@@ -38,7 +42,19 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
         switchedOn = intent.getBooleanExtra("isChecked",false);
         randomCarImage();
         timeFunction();
+        // Restore the saved state.
+        // See onSaveInstanceState() for what gets saved.
+        if (savedInstanceState != null) {
+            random_car = savedInstanceState.getInt("random_car");
+            String carImage = "img_" + random_car;
+            imageView.setImageDrawable(getResources().getDrawable(getID(carImage)));
+            //txt_correction.setText(savedInstanceState.getString("correction_text"));
+        }
     }
+
+//    private int getID(String carId) {
+//        return Integer.parseInt(null);
+//    }
 
     public void timeFunction(){
 
@@ -72,13 +88,14 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
     private void randomCarImage() {
         Random random = new Random();
         random_car = 1+random.nextInt(30);
-        ImageView imageView = (ImageView) findViewById(R.id.random_imageView);
-        String carId = "img_" + random_car;
-        imageView.setImageDrawable(getResources().getDrawable(getID(carId,"drawable",getApplicationContext())));
+        imageView = (ImageView) findViewById(R.id.random_imageView);
+        carId = "img_" + random_car;
+        imageView.setImageDrawable(getResources().getDrawable(getID(carId)));
     }
 
-    private int getID(String carId, String drawable, Context applicationContext) {
-        int ResourceID = applicationContext.getResources().getIdentifier(carId, drawable, applicationContext.getApplicationInfo().packageName);
+    private int getID(String carId) {
+        //int ResourceID = applicationContext.getResources().getIdentifier(carId, drawable, applicationContext.getApplicationInfo().packageName);
+        int ResourceID = getResources().getIdentifier(carId,"drawable",getPackageName());
         if (ResourceID == 0) {
             throw new IllegalArgumentException(
                     "No resource string found with name : " + carId
@@ -209,5 +226,10 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
     public void onNothingSelected(AdapterView<?> parent) {
     }
 
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("random_car",random_car);
+        //outState.putString("correction_text", txt_correction.getText().toString());
+    }
 }
