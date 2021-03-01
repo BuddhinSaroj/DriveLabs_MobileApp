@@ -9,18 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobile_CourseWork_01">
-        <activity android:name=".AdvancedLevelComponent"></activity>
-        <activity android:name=".AdvancedLevel" />
-        <activity android:name=".IdentifyCarImg" />
-        <activity android:name=".HintsGuessing" />
-        <activity android:name=".IdentifyTheCarMake" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Login_page">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AdvancedLevel" />
+        <activity android:name=".IdentifyCarImg" />
+        <activity android:name=".HintsGuessing" />
+        <activity android:name=".IdentifyTheCarMake" />
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>

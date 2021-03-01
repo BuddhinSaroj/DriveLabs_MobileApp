@@ -28,6 +28,7 @@
     <string name="exceed" />
     <string name="timer">Timer</string>
     <string name="timerView" />
+    <string name="login">TODO</string>
     <string-array name="cars_arrayList">
         <item>Select Car Model : </item>
         <item>Audi</item>
