@@ -1,7 +1,7 @@
 package com.example.mobile_coursework_01;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.Context;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,8 +27,6 @@ public class HintsGuessing extends AppCompatActivity {
     TextView answers;
     TextView exceeded;
     ImageView imageView;
-    int greenColorValue = Color.parseColor("#23cc1b");
-    int yellowColorValue = Color.parseColor("#e3ff00");
     boolean switchedOn;
     CountDownTimer countdownTimer;
     TextView timerView;
@@ -178,9 +176,7 @@ public class HintsGuessing extends AppCompatActivity {
                 countdownTimer.cancel();
                 countdownTimer = null;
             }
-            exceeded.setTextColor(yellowColorValue);
             exceeded.setText("Oooops ! Your attempts are left");
-            answers.setTextColor(greenColorValue);
             answers.setText("Correct answer is : " + carModel);
             Toasty.error(this, "WRONG!", Toast.LENGTH_LONG).show();
             submitBtn.setText("Next");
