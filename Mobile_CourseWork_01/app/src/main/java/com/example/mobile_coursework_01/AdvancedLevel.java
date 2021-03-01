@@ -52,6 +52,7 @@ public class AdvancedLevel extends AppCompatActivity {
     String txt1 = "";
     String txt2 = "";
     String txt3 = "";
+   // boolean bool = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +62,10 @@ public class AdvancedLevel extends AppCompatActivity {
         Intent intent = getIntent();
         switchedOn = intent.getBooleanExtra("isChecked",false);
         randomImg01 = findViewById(R.id.imageView1);
-        inputTxtOne = findViewById(R.id.txt_img1);
         randomImg02 = findViewById(R.id.imageView2);
-        inputTxtTwo = findViewById(R.id.txt_img2);
         randomImg03 = findViewById(R.id.imageView3);
+        inputTxtOne = findViewById(R.id.txt_img1);
+        inputTxtTwo = findViewById(R.id.txt_img2);
         inputTxtThree = findViewById(R.id.txt_img3);
         timerView = findViewById(R.id.timerView4);
         txtCorrectionOne = (TextView)findViewById(R.id.txt_correction1);
@@ -73,6 +74,51 @@ public class AdvancedLevel extends AppCompatActivity {
         counterView = (TextView)findViewById(R.id.counter);
         carImgGenerate();
         timeFunction();
+
+
+        if (savedInstanceState != null) {
+            carOne = savedInstanceState.getInt("carOne");
+            randomImg01.setImageResource(firstSetOfCar[carOne]);
+
+            carTwo = savedInstanceState.getInt("carTwo");
+            randomImg02.setImageResource(secondSetOfCar[carTwo]);
+
+            carThree = savedInstanceState.getInt("carThree");
+            randomImg03.setImageResource(thirdSetOfCar[carThree]);
+
+            inputTxtOne.setTextColor(savedInstanceState.getInt("colorValue1"));
+            inputTxtTwo.setTextColor(savedInstanceState.getInt("colorValue2"));
+            inputTxtThree.setTextColor(savedInstanceState.getInt("colorValue3"));
+
+            inputTxtOne.setHintTextColor(savedInstanceState.getInt("hintColorVal1"));
+            inputTxtTwo.setHintTextColor(savedInstanceState.getInt("hintColorVal2"));
+            inputTxtThree.setHintTextColor(savedInstanceState.getInt("hintColorVal3"));
+
+            inputTxtOne.setText(savedInstanceState.getString("inputTxtOne"));
+            inputTxtTwo.setText(savedInstanceState.getString("inputTxtTwo"));
+            inputTxtThree.setText(savedInstanceState.getString("inputTxtThree"));
+
+            inputTxtOne.setHint(savedInstanceState.getString("inputTxtOneHint"));
+            inputTxtTwo.setHint(savedInstanceState.getString("inputTxtTwoHint"));
+            inputTxtThree.setHint(savedInstanceState.getString("inputTxtThreeHint"));
+
+            txtCorrectionOne.setText(savedInstanceState.getString("txtCorrectionOne"));
+            txtCorrectionTwo.setText(savedInstanceState.getString("txtCorrectionTwo"));
+            txtCorrectionThree.setText(savedInstanceState.getString("txtCorrectionThree"));
+
+            submitBtn.setText(savedInstanceState.getString("submitBtn"));
+            counterView.setText(savedInstanceState.getString("counterView"));
+            attempts = savedInstanceState.getInt("attempts");
+            count = savedInstanceState.getInt("count");
+
+            txt1 = savedInstanceState.getString("txt1");
+            txt2 = savedInstanceState.getString("txt2");
+            txt3 = savedInstanceState.getString("txt3");
+
+            inputTxtOne.setEnabled(savedInstanceState.getBoolean("bool1"));
+            inputTxtTwo.setEnabled(savedInstanceState.getBoolean("bool2"));
+            inputTxtThree.setEnabled(savedInstanceState.getBoolean("bool3"));
+        }
     }
 
     public void timeFunction(){
@@ -312,5 +358,46 @@ public class AdvancedLevel extends AppCompatActivity {
             txtCorrectionTwo.setText("");
             txtCorrectionThree.setText("");
         }
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("carOne",carOne);
+        outState.putInt("carTwo",carTwo);
+        outState.putInt("carThree",carThree);
+
+        outState.putString("inputTxtOne",inputTxtOne.getText().toString());
+        outState.putString("inputTxtTwo",inputTxtTwo.getText().toString());
+        outState.putString("inputTxtThree",inputTxtThree.getText().toString());
+
+        outState.putString("inputTxtOneHint",inputTxtOne.getHint().toString());//
+        outState.putString("inputTxtTwoHint",inputTxtTwo.getHint().toString());//
+        outState.putString("inputTxtThreeHint",inputTxtThree.getHint().toString());//
+
+        outState.putString("txtCorrectionOne",txtCorrectionOne.getText().toString());
+        outState.putString("txtCorrectionTwo",txtCorrectionTwo.getText().toString());
+        outState.putString("txtCorrectionThree",txtCorrectionThree.getText().toString());
+
+        outState.putInt("attempts",attempts);
+        outState.putString("counterView",counterView.getText().toString());
+        outState.putInt("count",count);
+
+        outState.putString("txt1",txt1);
+        outState.putString("txt2",txt2);
+        outState.putString("txt3",txt3);
+        outState.putString("submitBtn",submitBtn.getText().toString());
+
+        outState.putInt("colorValue1",inputTxtOne.getCurrentTextColor());
+        outState.putInt("colorValue2",inputTxtTwo.getCurrentTextColor());
+        outState.putInt("colorValue3",inputTxtThree.getCurrentTextColor());
+
+        outState.putInt("hintColorVal1",inputTxtOne.getCurrentHintTextColor());
+        outState.putInt("hintColorVal2",inputTxtOne.getCurrentHintTextColor());
+        outState.putInt("hintColorVal3",inputTxtOne.getCurrentHintTextColor());
+
+        outState.putBoolean("bool1",inputTxtOne.isEnabled());
+        outState.putBoolean("bool2",inputTxtTwo.isEnabled());
+        outState.putBoolean("bool3",inputTxtThree.isEnabled());
     }
 }
