@@ -14,6 +14,7 @@
     <string name="next">Next>></string>
     <string name="todo2">TODO</string>
     <string name="todo">TODO</string>
+    <string name="correctOrIncorrect"></string>
     <string name="txt_hint"></string>
     <string name="input_char">Input character here :</string>
     <string name="btn_submit">Submit</string>

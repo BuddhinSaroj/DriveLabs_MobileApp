@@ -3,6 +3,7 @@ package com.example.mobile_coursework_01;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -12,8 +13,6 @@ import android.widget.Toast;
 
 import java.util.Random;
 
-import es.dmoral.toasty.Toasty;
-
 public class IdentifyCarImg extends AppCompatActivity {
 
     Random random = new Random();
@@ -22,6 +21,7 @@ public class IdentifyCarImg extends AppCompatActivity {
     ImageView randomImg03;
     TextView timerView;
     TextView displayingCarName;
+    TextView correctOrIncorrect;
     int carOne ;
     int carTwo ;
     int carThree ;
@@ -45,6 +45,7 @@ public class IdentifyCarImg extends AppCompatActivity {
         randomImg02 = findViewById(R.id.random_Img_02);
         randomImg03 = findViewById(R.id.random_Img_03);
         timerView = findViewById(R.id.timerView2);
+        correctOrIncorrect = findViewById(R.id.corrections);
         carImgGenerate();
         timeFunction();
         if (savedInstanceState != null) {
@@ -59,6 +60,9 @@ public class IdentifyCarImg extends AppCompatActivity {
             randomImg03.setImageResource(thirdSetOfCar[carThree]);//thirdSetOfCar[arrayIndex];
 
             displayingCarName.setText(savedInstanceState.getString("car_name"));
+
+            correctOrIncorrect.setText(savedInstanceState.getString("correctOrIncorrectTxt"));
+            correctOrIncorrect.setTextColor(savedInstanceState.getInt("correctOrIncorrectColor"));
         }
     }
     public void timeFunction(){
@@ -150,14 +154,17 @@ public class IdentifyCarImg extends AppCompatActivity {
             clicks++;
 
             if (displayingCarName.getText() == "Audi" || displayingCarName.getText() == "Toyota" || displayingCarName.getText() == "Peugeot") {
-                Toasty.success(this, "Correct ! ", Toast.LENGTH_LONG).show();
+                correctOrIncorrect.setTextColor(Color.parseColor("#00FF00"));
+                correctOrIncorrect.setText("CORRECT!");
             } else {
-                Toasty.error(this, "Wrong ! ", Toast.LENGTH_LONG).show();
+                correctOrIncorrect.setTextColor(Color.parseColor("#f01c05"));
+                correctOrIncorrect.setText("WRONG ! ");
             }
         }
         else if (clicks == 5)//this part connect with msg();
         {
-            Toasty.warning(this, "Time exceeded click on next button", Toast.LENGTH_SHORT).show();
+            correctOrIncorrect.setText("Time exceeded click on next button");
+            correctOrIncorrect.setTextColor(Color.parseColor("#FFD700"));
         }
         else {
             Toast.makeText(getApplicationContext(),"You Already Clicked an Image",Toast.LENGTH_SHORT).show();
@@ -175,14 +182,17 @@ public class IdentifyCarImg extends AppCompatActivity {
             clicks++;
 
             if (displayingCarName.getText() == "BMW" || displayingCarName.getText() == "Honda" || displayingCarName.getText() == "Tesla") {
-                Toasty.success(this, "Correct ! ", Toast.LENGTH_LONG).show();
+                correctOrIncorrect.setTextColor(Color.parseColor("#00FF00"));
+                correctOrIncorrect.setText("CORRECT!");
             } else {
-                Toasty.error(this, "Wrong ! ", Toast.LENGTH_LONG).show();
+                correctOrIncorrect.setTextColor(Color.parseColor("#f01c05"));
+                correctOrIncorrect.setText("WRONG ! ");
             }
         }
         else if (clicks == 5)//this part connect with msg();
         {
-            Toasty.warning(this, "Time exceeded click on next button", Toast.LENGTH_SHORT).show();
+            correctOrIncorrect.setText("Time exceeded click on next button");
+            correctOrIncorrect.setTextColor(Color.parseColor("#FFD700"));
         }
         else {
             Toast.makeText(getApplicationContext(),"You Already Clicked an Image",Toast.LENGTH_SHORT).show();
@@ -201,14 +211,17 @@ public class IdentifyCarImg extends AppCompatActivity {
             clicks++;
 
             if (displayingCarName.getText() == "Mercedes" || displayingCarName.getText() == "Nissan" || displayingCarName.getText() == "Suzuki") {
-                Toasty.success(this, "Correct ! ", Toast.LENGTH_LONG).show();
+                correctOrIncorrect.setTextColor(Color.parseColor("#00FF00"));
+                correctOrIncorrect.setText("CORRECT!");
             } else {
-                Toasty.error(this, "Wrong ! ", Toast.LENGTH_LONG).show();
+                correctOrIncorrect.setTextColor(Color.parseColor("#f01c05"));
+                correctOrIncorrect.setText("WRONG ! ");
             }
         }
         else if (clicks == 5)//this part connect with msg();
         {
-            Toasty.warning(this, "Time exceeded click on next button", Toast.LENGTH_SHORT).show();
+            correctOrIncorrect.setText("Time exceeded click on next button");
+            correctOrIncorrect.setTextColor(Color.parseColor("#FFD700"));
         }
         else {
             Toast.makeText(getApplicationContext(),"You Already Clicked an Image",Toast.LENGTH_SHORT).show();
@@ -219,7 +232,8 @@ public class IdentifyCarImg extends AppCompatActivity {
         }
     }
     public void msg(){
-        Toasty.error(this, "Wrong ! ", Toast.LENGTH_LONG).show();//this method calls after the onFinish()
+        correctOrIncorrect.setTextColor(Color.parseColor("#f01c05"));
+        correctOrIncorrect.setText("WRONG ! ");//this method calls after the onFinish()
         clicks = clicks+5; //this part use to give a message to user about time has exceeded.
     }                      //after time exceeding user try again to click on the images,but in this part block that chance.
 
@@ -232,6 +246,7 @@ public class IdentifyCarImg extends AppCompatActivity {
     }
     public void next(){
         clicks = 0; //after click on the next button click variable set to zero
+        correctOrIncorrect.setText("");
         carImgGenerate();
         if (switchedOn){
             timeFunction();
@@ -245,5 +260,7 @@ public class IdentifyCarImg extends AppCompatActivity {
         outState.putInt("carTwo",carTwo);
         outState.putInt("carThree",carThree);
         outState.putString("car_name",displayingCarName.getText().toString());
+        outState.putString("correctOrIncorrectTxt", correctOrIncorrect.getText().toString());
+        outState.putInt("correctOrIncorrectColor", correctOrIncorrect.getCurrentTextColor());
     }
 }

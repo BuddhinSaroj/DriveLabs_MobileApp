@@ -11,11 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Random;
 
-import es.dmoral.toasty.Toasty;
 
 public class AdvancedLevel extends AppCompatActivity {
 
@@ -33,6 +31,7 @@ public class AdvancedLevel extends AppCompatActivity {
     TextView txtCorrectionTwo; //Three text correction textViews,If answers are incorrect,this fields used to display correct answer
     TextView txtCorrectionThree;
     TextView counterView; //Display marks of users gain in the game
+    TextView correctionOrIncorrection;
     Button submitBtn;
     int carOne;
     int carTwo; //store randomly generated numbers
@@ -52,7 +51,6 @@ public class AdvancedLevel extends AppCompatActivity {
     String txt1 = "";
     String txt2 = "";
     String txt3 = "";
-   // boolean bool = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +70,7 @@ public class AdvancedLevel extends AppCompatActivity {
         txtCorrectionTwo = (TextView)findViewById(R.id.txt_correction2);
         txtCorrectionThree =(TextView) findViewById(R.id.txt_correction3);
         counterView = (TextView)findViewById(R.id.counter);
+        correctionOrIncorrection = findViewById(R.id.correctOrIncorrect);
         carImgGenerate();
         timeFunction();
 
@@ -118,6 +117,9 @@ public class AdvancedLevel extends AppCompatActivity {
             inputTxtOne.setEnabled(savedInstanceState.getBoolean("bool1"));
             inputTxtTwo.setEnabled(savedInstanceState.getBoolean("bool2"));
             inputTxtThree.setEnabled(savedInstanceState.getBoolean("bool3"));
+
+            correctionOrIncorrection.setText(savedInstanceState.getString("correctOrIncorrectTxt"));
+            correctionOrIncorrection.setTextColor(savedInstanceState.getInt("correctOrIncorrectColor"));
         }
     }
 
@@ -315,7 +317,9 @@ public class AdvancedLevel extends AppCompatActivity {
                 inputTxtTwo.setEnabled(false);
                 inputTxtThree.setEnabled(false);
                 submitBtn.setText("Next");
-                Toasty.error(this, "No attempts left ! ", Toast.LENGTH_LONG).show();
+                correctionOrIncorrection.setTextColor(Color.parseColor("#f01c05"));
+                correctionOrIncorrection.setText("No attempts left ! ");
+
 
             }if((txt1.equals("Correct ! ") && txt2.equals("Correct ! ") && txt3.equals("Correct ! "))){
                 attempts = 0;
@@ -324,13 +328,15 @@ public class AdvancedLevel extends AppCompatActivity {
                     countdownTimer = null;
                 }
                 submitBtn.setText("Next");
-                Toasty.success(this, "CORRECT!", Toast.LENGTH_LONG).show();
+                correctionOrIncorrection.setTextColor(Color.parseColor("#00FF00"));
+                correctionOrIncorrection.setText("CORRECT!");
             }
         }
         else if(submitBtn.getText().equals("Next")){
             txt1 ="";
             txt2 ="";
             txt3 ="";
+            correctionOrIncorrection.setText("");
             submitBtn.setText("Submit");
             carImgGenerate();
             if (switchedOn){
@@ -399,5 +405,8 @@ public class AdvancedLevel extends AppCompatActivity {
         outState.putBoolean("bool1",inputTxtOne.isEnabled());
         outState.putBoolean("bool2",inputTxtTwo.isEnabled());
         outState.putBoolean("bool3",inputTxtThree.isEnabled());
+
+        outState.putString("correctOrIncorrectTxt", correctionOrIncorrection.getText().toString());
+        outState.putInt("correctOrIncorrectColor", correctionOrIncorrection.getCurrentTextColor());
     }
 }

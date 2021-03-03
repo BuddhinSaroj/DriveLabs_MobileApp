@@ -11,11 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Random;
 
-import es.dmoral.toasty.Toasty;
 
 public class HintsGuessing extends AppCompatActivity {
     int random_car;
@@ -30,6 +28,7 @@ public class HintsGuessing extends AppCompatActivity {
     boolean switchedOn;
     CountDownTimer countdownTimer;
     TextView timerView;
+    TextView correctionOrIncorrect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +43,7 @@ public class HintsGuessing extends AppCompatActivity {
         answers = findViewById(R.id.answer);
         exceeded = findViewById(R.id.exceed);
         timerView = findViewById(R.id.timerView3);
+        correctionOrIncorrect = findViewById(R.id.correction);
         randomCarImage();
         charSpacings();
         timeFunction();
@@ -57,6 +57,8 @@ public class HintsGuessing extends AppCompatActivity {
             exceeded.setText(savedInstanceState.getString("exceeded"));
             answers.setText(savedInstanceState.getString("answers"));
             submitBtn.setText(savedInstanceState.getString("submitBtn"));
+            correctionOrIncorrect.setText(savedInstanceState.getString("correctOrIncorrectTxt"));
+            correctionOrIncorrect.setTextColor(savedInstanceState.getInt("correctOrIncorrectColor"));
         }
     }
 
@@ -71,7 +73,8 @@ public class HintsGuessing extends AppCompatActivity {
 
                 @Override
                 public void onFinish() {
-                    Toasty.warning(getApplicationContext(), "Time exceeded click on next button", Toast.LENGTH_LONG).show();
+                    correctionOrIncorrect.setText("Time exceeded click on next button");
+                    correctionOrIncorrect.setTextColor(Color.parseColor("#FFD700"));
                     answers.setTextColor(Color.parseColor("#23cc1b"));
                     answers.setText("Correct answer is : " + carModel);
                     submitBtn.setText("Next");
@@ -151,7 +154,12 @@ public class HintsGuessing extends AppCompatActivity {
 
         if (!(carModel.contains(inputLetter)) && (attempts > 0)){
             --attempts;
-            Toasty.error(this, "Incorrect letter", Toast.LENGTH_SHORT).show();
+            correctionOrIncorrect.setText("Incorrect letter");
+            correctionOrIncorrect.setTextColor(Color.parseColor("#FF0000"));
+        }
+        else if (inputLetter.length() == 0 || inputLetter.length()>=2){
+            correctionOrIncorrect.setText("Enter only one letter");
+            correctionOrIncorrect.setTextColor(Color.parseColor("#FF0000"));
         }
         else if (attempts > 0 && submitBtn.getText().toString().equalsIgnoreCase("Submit")) {
             for (int i = 0; i < carModel.length(); i++) {
@@ -163,7 +171,8 @@ public class HintsGuessing extends AppCompatActivity {
                     dash = sb.toString();
                 }
             }if (carModel.equalsIgnoreCase(dash)){
-                Toasty.success(this, "CORRECT!", Toast.LENGTH_SHORT).show();
+                correctionOrIncorrect.setText("CORRECT");
+                correctionOrIncorrect.setTextColor(Color.parseColor("#32CD32"));
                 if(countdownTimer != null) {//if user guess the correct answer,and that code used to stop current running time.
                     countdownTimer.cancel();
                     countdownTimer = null;
@@ -178,7 +187,8 @@ public class HintsGuessing extends AppCompatActivity {
             }
             exceeded.setText("Oooops ! Your attempts are left");
             answers.setText("Correct answer is : " + carModel);
-            Toasty.error(this, "WRONG!", Toast.LENGTH_LONG).show();
+            correctionOrIncorrect.setText("WRONG!");
+            correctionOrIncorrect.setTextColor(Color.parseColor("#FF0000"));
             submitBtn.setText("Next");
             inputTxt.setText("");
         }
@@ -209,5 +219,8 @@ public class HintsGuessing extends AppCompatActivity {
         outState.putString("exceeded",exceeded.getText().toString());
         outState.putString("answers",answers.getText().toString());
         outState.putString("submitBtn",submitBtn.getText().toString());
+
+        outState.putString("correctOrIncorrectTxt", correctionOrIncorrect.getText().toString());
+        outState.putInt("correctOrIncorrectColor", correctionOrIncorrect.getCurrentTextColor());
     }
 }
