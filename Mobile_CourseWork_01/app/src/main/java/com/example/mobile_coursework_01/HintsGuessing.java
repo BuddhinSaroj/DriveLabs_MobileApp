@@ -157,7 +157,7 @@ public class HintsGuessing extends AppCompatActivity {
             correctionOrIncorrect.setText("Incorrect letter");
             correctionOrIncorrect.setTextColor(Color.parseColor("#FF0000"));
         }
-        else if (inputLetter.length() == 0 || inputLetter.length()>=2){
+        else if ((inputLetter.length() == 0 || inputLetter.length()>=2) && submitBtn.getText().toString().equalsIgnoreCase("Submit") ){
             correctionOrIncorrect.setText("Enter only one letter");
             correctionOrIncorrect.setTextColor(Color.parseColor("#FF0000"));
         }
@@ -168,6 +168,7 @@ public class HintsGuessing extends AppCompatActivity {
                     StringBuilder sb = new StringBuilder(dash);
                     sb.replace(i, i + 1, inputLetter);
                     txt_characters.setText(sb);
+                    correctionOrIncorrect.setText("");
                     dash = sb.toString();
                 }
             }if (carModel.equalsIgnoreCase(dash)){
@@ -198,6 +199,7 @@ public class HintsGuessing extends AppCompatActivity {
             exceeded.setText("");
             answers.setText("");
             inputTxt.setText("");
+            correctionOrIncorrect.setText("");
             attempts = 3;
             next();
         }
