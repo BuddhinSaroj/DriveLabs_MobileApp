@@ -16,18 +16,20 @@ import java.util.Random;
 public class IdentifyCarImg extends AppCompatActivity {
 
     Random random = new Random();
-    ImageView randomImg01;
-    ImageView randomImg02;
-    ImageView randomImg03;
-    TextView timerView;
-    TextView displayingCarName;
-    TextView correctOrIncorrect;
-    int carOne ;
-    int carTwo ;
-    int carThree ;
-    int clicks = 0 ;
-    boolean switchedOn;
-    CountDownTimer countdownTimer;
+    private ImageView randomImg01;
+    private ImageView randomImg02;
+    private ImageView randomImg03;
+    private TextView timerView;
+    private TextView displayingCarName;
+    private TextView correctOrIncorrect;
+    private int carOne ;
+    private int carTwo ;
+    private int carThree ;
+    private int clicks = 0 ;
+    private boolean switchedOn;
+    private CountDownTimer countdownTimer;
+    private boolean isTimerOn = true;
+    private long milliSecondsCount= 20000;
 
     //create three set of arrays for store car images.
     int firstSetOfCar [] = {R.drawable.img_1,R.drawable.img_2,R.drawable.img_3,R.drawable.img_4,R.drawable.img_5,R.drawable.img_27,R.drawable.img_28,R.drawable.img_29,R.drawable.img_30,R.drawable.img_31,R.drawable.img_20,R.drawable.img_21};
@@ -47,7 +49,7 @@ public class IdentifyCarImg extends AppCompatActivity {
         timerView = findViewById(R.id.timerView2);
         correctOrIncorrect = findViewById(R.id.corrections);
         carImgGenerate();
-        timeFunction();
+
         if (savedInstanceState != null) {
             clicks = savedInstanceState.getInt("clicks");
             carOne = savedInstanceState.getInt("carOne");
@@ -63,25 +65,34 @@ public class IdentifyCarImg extends AppCompatActivity {
 
             correctOrIncorrect.setText(savedInstanceState.getString("correctOrIncorrectTxt"));
             correctOrIncorrect.setTextColor(savedInstanceState.getInt("correctOrIncorrectColor"));
+
+            isTimerOn = savedInstanceState.getBoolean("isTimerOn");
+            milliSecondsCount = savedInstanceState.getLong("timerValue");
         }
+        timeFunction();
     }
     public void timeFunction(){
 
-        if(switchedOn){
-            countdownTimer = new CountDownTimer(20000, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    timerView.setText(""+millisUntilFinished / 1000);
-                }
-
-                @Override
-                public void onFinish() {
-                    if (clicks == 0){//if user didn't click on the any image,click variable also zero.
-                        msg();
+        if (isTimerOn) {
+            if (switchedOn) {
+                countdownTimer = new CountDownTimer(milliSecondsCount, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        milliSecondsCount = millisUntilFinished;
+                        isTimerOn = true;
+                        timerView.setText("" + millisUntilFinished / 1000);
                     }
-                }
-            }.start();
 
+                    @Override
+                    public void onFinish() {
+                        isTimerOn = false;
+                        if (clicks == 0) {//if user didn't click on the any image,click variable also zero.
+                            msg();
+                        }
+                    }
+                }.start();
+
+            }
         }
     }
 
@@ -163,14 +174,15 @@ public class IdentifyCarImg extends AppCompatActivity {
         }
         else if (clicks == 5)//this part connect with msg();
         {
-            correctOrIncorrect.setText("Time exceeded click on next button");
-            correctOrIncorrect.setTextColor(Color.parseColor("#FFD700"));
+            //correctOrIncorrect.setText("Time exceeded click on next button");
+            Toast.makeText(getApplicationContext(),"Time exceeded click on next button",Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(getApplicationContext(),"You Already Clicked an Image",Toast.LENGTH_SHORT).show();
         }
         if(countdownTimer != null) {//if user select 1st image,and that time current time is stop.
             countdownTimer.cancel();
+            isTimerOn = false;
             countdownTimer = null;
         }
     }
@@ -191,14 +203,15 @@ public class IdentifyCarImg extends AppCompatActivity {
         }
         else if (clicks == 5)//this part connect with msg();
         {
-            correctOrIncorrect.setText("Time exceeded click on next button");
-            correctOrIncorrect.setTextColor(Color.parseColor("#FFD700"));
+            //correctOrIncorrect.setText("Time exceeded click on next button");
+            Toast.makeText(getApplicationContext(),"Time exceeded click on next button",Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(getApplicationContext(),"You Already Clicked an Image",Toast.LENGTH_SHORT).show();
         }
         if(countdownTimer != null) {//if user select 2nd image,and that time current time is stop.
             countdownTimer.cancel();
+            isTimerOn = false;
             countdownTimer = null;
         }
 
@@ -220,14 +233,15 @@ public class IdentifyCarImg extends AppCompatActivity {
         }
         else if (clicks == 5)//this part connect with msg();
         {
-            correctOrIncorrect.setText("Time exceeded click on next button");
-            correctOrIncorrect.setTextColor(Color.parseColor("#FFD700"));
+            //correctOrIncorrect.setText("Time exceeded click on next button");
+            Toast.makeText(getApplicationContext(),"Time exceeded click on next button",Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(getApplicationContext(),"You Already Clicked an Image",Toast.LENGTH_SHORT).show();
         }
         if(countdownTimer != null) { //if user select 3rd image,and that time current time is stop.
             countdownTimer.cancel();
+            isTimerOn = false;
             countdownTimer = null;
         }
     }
@@ -240,6 +254,7 @@ public class IdentifyCarImg extends AppCompatActivity {
     public void nextOnClick(View view) {
         if(countdownTimer != null) { //if user without selecting any image,this block use to stop current time in the timer.
             countdownTimer.cancel();
+            isTimerOn = false;
             countdownTimer = null;
         }
         next();
@@ -249,6 +264,8 @@ public class IdentifyCarImg extends AppCompatActivity {
         correctOrIncorrect.setText("");
         carImgGenerate();
         if (switchedOn){
+            milliSecondsCount = 20000;
+            isTimerOn = true;
             timeFunction();
         }
     }
@@ -262,5 +279,7 @@ public class IdentifyCarImg extends AppCompatActivity {
         outState.putString("car_name",displayingCarName.getText().toString());
         outState.putString("correctOrIncorrectTxt", correctOrIncorrect.getText().toString());
         outState.putInt("correctOrIncorrectColor", correctOrIncorrect.getCurrentTextColor());
+        outState.putLong("timerValue",milliSecondsCount);
+        outState.putBoolean("isTimerOn",isTimerOn);
     }
 }

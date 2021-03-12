@@ -18,17 +18,19 @@ import java.util.Random;
 
 public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    Spinner spinner;
-    TextView txt_correction;
-    TextView timerView;
-    TextView correctOrIncorrect;
-    Button btn_identify_next;
-    ImageView imageView;
-    int random_car;
-    String carId;
-    String carMake;
-    boolean switchedOn;
-    CountDownTimer countdownTimer;
+    private Spinner spinner;
+    private TextView txt_correction;
+    private TextView timerView;
+    private TextView correctOrIncorrect;
+    private Button btn_identify_next;
+    private ImageView imageView;
+    private int random_car;
+    private String carId;
+    private String carMake;
+    private boolean switchedOn;
+    private CountDownTimer countdownTimer;
+    private boolean isTimerOn = true;
+    private long milliSecondsCount= 20000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,6 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
         Intent intent = getIntent();
         switchedOn = intent.getBooleanExtra("isChecked",false);
         randomCarImage();
-        timeFunction();
         // Restore the saved state.
         // See onSaveInstanceState() for what gets saved.
         if (savedInstanceState != null) {
@@ -52,24 +53,32 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
             txt_correction.setText(savedInstanceState.getString("text_correction"));
             correctOrIncorrect.setText(savedInstanceState.getString("correctOrIncorrectTxt"));
             correctOrIncorrect.setTextColor(savedInstanceState.getInt("correctOrIncorrectColor"));
+            isTimerOn = savedInstanceState.getBoolean("isTimerOn");
+            milliSecondsCount = savedInstanceState.getLong("timerValue");
 
         }
+        timeFunction();
     }
 
     public void timeFunction(){
-        if(switchedOn){
-             countdownTimer = new CountDownTimer(20000, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    timerView.setText(""+millisUntilFinished / 1000);
-                }
+        if (isTimerOn) {
+            if (switchedOn) {
+                countdownTimer = new CountDownTimer(milliSecondsCount, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        milliSecondsCount = millisUntilFinished;
+                        isTimerOn = true;
+                        timerView.setText("" + millisUntilFinished / 1000);
+                    }
 
-                @Override
-                public void onFinish() {
-                    function();
-                }
-            }.start();
+                    @Override
+                    public void onFinish() {
+                        isTimerOn = false;
+                        function();
+                    }
+                }.start();
 
+            }
         }
 
         spinner = findViewById(R.id.spinner);
@@ -105,6 +114,8 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
     public void identifyButtonOnClick(View view) {
         if(countdownTimer != null) {
             countdownTimer.cancel();
+            //milliSecondsCount = 0;
+            isTimerOn = false;
             countdownTimer = null;
         }
         function();
@@ -218,6 +229,8 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
         else if(btn_identify_next.getText().equals("Next")){
             correctOrIncorrect.setText("");
             if (switchedOn){
+                milliSecondsCount = 20000;
+                isTimerOn = true;
                 timeFunction();
             }
             btn_identify_next.setText("Identify");
@@ -247,5 +260,7 @@ public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView
         outState.putString("text_correction",txt_correction.getText().toString());
         outState.putString("correctOrIncorrectTxt", correctOrIncorrect.getText().toString());
         outState.putInt("correctOrIncorrectColor", correctOrIncorrect.getCurrentTextColor());
+        outState.putLong("timerValue",milliSecondsCount);
+        outState.putBoolean("isTimerOn",isTimerOn);
     }
 }

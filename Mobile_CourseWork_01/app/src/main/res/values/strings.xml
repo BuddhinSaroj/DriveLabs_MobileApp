@@ -30,6 +30,7 @@
     <string name="timerView" />
     <string name="login">TODO</string>
     <string name="todo">TODO</string>
+    <string name="textView_marks">Marks</string>
     <string-array name="cars_arrayList">
         <item>Select Car Model : </item>
         <item>Audi</item>
