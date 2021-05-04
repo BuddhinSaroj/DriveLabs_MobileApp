@@ -15,6 +15,10 @@ import android.widget.TextView;
 
 import java.util.Random;
 
+/*Buddhin Saroj Samarasinghe – 2019166(W1761197)
+ I confirm that I understand what plagiarism is and have read and understood the section on Assessment Offences in the Essential Information for Students.
+ The work that I have submitted is entirely my own. Any work from other authors is duly referenced and acknowledged.
+*/
 
 public class IdentifyTheCarMake extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 

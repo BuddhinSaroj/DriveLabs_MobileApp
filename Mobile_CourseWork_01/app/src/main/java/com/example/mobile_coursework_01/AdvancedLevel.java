@@ -168,7 +168,7 @@ public class AdvancedLevel extends AppCompatActivity {
 
     public void submitBtn(View view) {
         if (!(txt1.equals("Correct ! ")) || !(txt2.equals("Correct ! ")) || !(txt3.equals("Correct ! "))){
-            attempts++;
+            attempts++;//only three attempts for incorrect guesses
         }
         checkingTxt();
     }
@@ -181,7 +181,7 @@ public class AdvancedLevel extends AppCompatActivity {
                     txt1 = "Correct ! ";
                     inputTxtOne.setTextColor(greenColorValue);
                     inputTxtOne.setEnabled(false);
-                    count++;
+                    count++;//marks
                 } else if (!(inputTxtOne.getText().toString().equalsIgnoreCase("Audi"))) {
                     inputTxtOne.setHint("Wrong!");
                     inputTxtOne.setHintTextColor(redColorValue);
